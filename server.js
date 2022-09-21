@@ -52,6 +52,7 @@ app.get('/good', (req, res) => {
         profile: "google"
     })
 });
+
 app.get('/auth/google/callback',
     passport.authenticate('google',
         { failureRedirect: '/failed' }),
