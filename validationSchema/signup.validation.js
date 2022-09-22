@@ -20,6 +20,10 @@ const signupSchema = {
         isEmail: true,
         notEmpty: true,
         errorMessage: "Email field cannot be empty"
+    },
+    role: {
+        notEmpty: true,
+        errorMessage: "Role field can not be empty"
     }
 }
 module.exports = signupSchema

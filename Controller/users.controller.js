@@ -33,10 +33,19 @@ function updateUser(req, res) {
         res.status(500).json({ message: e.message });
     }
 }
-function deleteUser(req, res) {
+async function deleteUser(req, res) {
     try {
-        Users.destroy({ where: { id: req.user.id } });
-        res.status(200).json({ message: "User deleted successfully" });
+        const getUser = await Users.findAll({ where: { id: req.params.id } });
+
+        if (getUser && getUser.length) {
+            Users.destroy({ where: { id: req.params.id } });
+            res.status(200).json({ message: "User deleted successfully" });
+
+        } else {
+            res.status(400).json({ message: "User does not exist" });
+
+        }
+
     }
     catch (e) {
         res.status(500).json({ message: e.message });

@@ -25,6 +25,10 @@ module.exports = (sequelize, Sequelize) => {
         email: {
             type: Sequelize.STRING,
             allowNull: false
+        },
+        role: {
+            type: Sequelize.STRING,
+            allowNull: false
         }
     })
     return Users;

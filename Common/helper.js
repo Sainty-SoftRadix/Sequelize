@@ -3,11 +3,13 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const nodemailer = require("nodemailer");
+const url = require("url")
 const saltRounds = 10;
 dotenv.config();
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
 const USER = process.env.GMAIL_USERNAME;
 const PASS = process.env.GMAIL_PASSWORD;
+
 
 //OTP EMAIL SENT
 function sendEmail(userEmail, otp, res) {
@@ -77,7 +79,21 @@ async function verifyJWTToken(req, res, next) {
         } else {
             const result = await decodeJWTToken(token, res);
             req.user = result;
-            next();
+            const userNotAllowedRouters = [
+                { method: "DELETE", baseUrl: "/user" },
+            ]
+
+            if (result.role === "admin") {
+                return next();
+            }
+            //const matchMethod = userNotAllowedRouters.find(obj => obj.method = req.method);
+            const matchBaseUrl = userNotAllowedRouters.findIndex(obj => obj.baseUrl === req.baseUrl && obj.method === req.method)
+            if (matchBaseUrl > -1) {
+                return res.status(401).json("You don't have the permission!")
+            } else {
+                next();
+            }
+
         }
     }
     catch (e) {

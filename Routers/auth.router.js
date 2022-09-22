@@ -9,6 +9,7 @@ const router = express.Router();
 router.post("/signup", checkSchema(signupSchema), (req, res) => {
     authController.signup(req, res);
 })
+
 router.get("/login/:username/:password", checkSchema(loginSchema), (req, res) => {
     authController.login(req, res);
 })

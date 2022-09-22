@@ -11,15 +11,15 @@ async function signup(req, res) {
         } else {
             console.log("Successfully validated");
         }
-        const { name, username, email, password } = req.body;
+        const { name, username, email, password, role } = req.body;
         const getUsername = await Users.findOne({ where: { username: username } });
         if (getUsername) {
             res.status(400).json({ message: "Username already taken" });
         }
         console.log("body :", req.body);
         const hash = await encryptedPassword(password);
-        await Users.create({ name, username, email, password: hash });
-        const data = await Users.findOne({ where: { username: username }, attributes: { exclude: ["password", "otp"] } });
+        await Users.create({ name, username, email, password: hash, role });
+        const data = await Users.findOne({ where: { username: username }, attributes: { exclude: ["password", "otp", "role"] } });
         return res.status(200).json({ message: "Signup successfully", data });
     }
     catch (e) {
@@ -72,7 +72,7 @@ async function verifyOTP(req, res) {
                 const token = generateAccessToken(userData);
                 const userWithoutPasswordAndOtp = await Users.findOne({
                     where: { username: username },
-                    attributes: { exclude: ['password', 'otp'] }
+                    attributes: { exclude: ['password', 'otp', "role"] }
                 })
                 const finalData = userWithoutPasswordAndOtp.toJSON();
                 const user = {
