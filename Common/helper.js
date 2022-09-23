@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const nodemailer = require("nodemailer");
-const url = require("url")
 const saltRounds = 10;
 dotenv.config();
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
