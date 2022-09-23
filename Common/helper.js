@@ -79,13 +79,12 @@ async function verifyJWTToken(req, res, next) {
         } else {
             const result = await decodeJWTToken(token, res);
             req.user = result;
-            const userNotAllowedRouters = [
-                { method: "DELETE", baseUrl: "/user" },
-            ]
-
             if (result.role === "admin") {
                 return next();
             }
+            const userNotAllowedRouters = [
+                { method: "DELETE", baseUrl: "/user" },
+            ]
             //const matchMethod = userNotAllowedRouters.find(obj => obj.method = req.method);
             const matchBaseUrlAndmatchMethod = userNotAllowedRouters.findIndex(obj => obj.baseUrl === req.baseUrl && obj.method === req.method)
             if (matchBaseUrlAndmatchMethod > -1) {
