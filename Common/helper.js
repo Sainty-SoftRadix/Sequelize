@@ -85,8 +85,8 @@ async function verifyJWTToken(req, res, next) {
                 { method: "DELETE", baseUrl: "/user" },
             ]
             //const matchMethod = userNotAllowedRouters.find(obj => obj.method = req.method);
-            const matchBaseUrlAndmatchMethod = userNotAllowedRouters.findIndex(obj => obj.baseUrl === req.baseUrl && obj.method === req.method)
-            if (matchBaseUrlAndmatchMethod > -1) {
+            const matchBaseUrlAndMethod = userNotAllowedRouters.findIndex(obj => obj.baseUrl === req.baseUrl && obj.method === req.method)
+            if (matchBaseUrlAndMethod > -1) {
                 return res.status(401).json("You don't have the permission!")
             } else {
                 next();
